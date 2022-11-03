@@ -221,31 +221,31 @@ public class StructTransform : TransformBase<CsStruct, CppStruct>, ITransformer<
 
         // In case of explicit layout, check that we can safely generate it on both x86 and x64 (in case of an union
         // using pointers, we can't)
-        if (!csStruct.HasCustomMarshal && csStruct.ExplicitLayout && !cppStruct.IsUnion)
-        {
-            var fieldList = csStruct.Fields;
-            for (var i = 0; i < fieldList.Count; i++)
-            {
-                var field = fieldList[i];
-                var fieldAlignment = field.MarshalType.Alignment;
+        // if (!csStruct.HasCustomMarshal && csStruct.ExplicitLayout && !cppStruct.IsUnion)
+        // {
+        //     var fieldList = csStruct.Fields;
+        //     for (var i = 0; i < fieldList.Count; i++)
+        //     {
+        //         var field = fieldList[i];
+        //         var fieldAlignment = field.MarshalType.Alignment;
 
-                if (fieldAlignment.HasValue)
-                    continue;
+        //         if (fieldAlignment.HasValue)
+        //             continue;
 
-                // If pointer field is not the last one, than we can't handle it
-                if (i + 1 >= fieldList.Count)
-                    continue;
+        //         // If pointer field is not the last one, than we can't handle it
+        //         if (i + 1 >= fieldList.Count)
+        //             continue;
 
-                Logger.Error(
-                    LoggingCodes.NonPortableAlignment,
-                    "The field [{0}] in structure [{1}] has pointer alignment within a structure that requires explicit layout. This situation cannot be handled on both 32-bit and 64-bit architectures. This structure needs manual layout (remove fields from definition) and write them manually in xml mapping files",
-                    field.CppElementName,
-                    csStruct.CppElementName
-                );
+        //         Logger.Error(
+        //             LoggingCodes.NonPortableAlignment,
+        //             "The field [{0}] in structure [{1}] has pointer alignment within a structure that requires explicit layout. This situation cannot be handled on both 32-bit and 64-bit architectures. This structure needs manual layout (remove fields from definition) and write them manually in xml mapping files",
+        //             field.CppElementName,
+        //             csStruct.CppElementName
+        //         );
 
-                break;
-            }
-        }
+        //         break;
+        //     }
+        // }
 
         csStruct.StructSize = currentFieldAbsoluteOffset + previousFieldSize;
     }
