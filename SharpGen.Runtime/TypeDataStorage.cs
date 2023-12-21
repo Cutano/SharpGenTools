@@ -10,7 +10,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.CompilerServices;
-using SharpGen.Runtime.TrimmingWrappers;
+using SharpGen.Runtime.Trimming;
 
 namespace SharpGen.Runtime;
 
@@ -78,7 +78,11 @@ public static unsafe class TypeDataStorage
         return GetSourceVtblFromReflection(typeof(T));
     }
 
-    private static IntPtr[]? GetSourceVtblFromReflection(Type type)
+    private static IntPtr[]? GetSourceVtblFromReflection(
+#if NET6_0_OR_GREATER
+        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.PublicFields | DynamicallyAccessedMemberTypes.NonPublicFields | DynamicallyAccessedMemberTypes.PublicProperties | DynamicallyAccessedMemberTypes.NonPublicProperties)]
+#endif
+        Type type)
     {
         const string vtbl = "Vtbl";
 
@@ -121,8 +125,6 @@ public static unsafe class TypeDataStorage
     internal static bool GetTargetVtbl(
 #if NET6_0_OR_GREATER
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.Interfaces)]
-#elif NET5_0_OR_GREATER
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
 #endif
         TypeInfo type, out void* pointer)
     {
@@ -147,8 +149,6 @@ public static unsafe class TypeDataStorage
     private static IntPtr RegisterFromReflection(
 #if NET6_0_OR_GREATER
         [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.Interfaces)]
-#elif NET5_0_OR_GREATER
-        [DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
 #endif
         TypeInfo type, IntPtr[] sourceVtbl)
     {
