@@ -2,7 +2,7 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
-namespace SharpGen.Runtime.TrimmingWrappers
+namespace SharpGen.Runtime.Trimming
 {
     internal static class TrimmingExtensions
     {
@@ -17,10 +17,6 @@ namespace SharpGen.Runtime.TrimmingWrappers
 
 #if NET6_0_OR_GREATER
         [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.Interfaces)]
-#elif NET5_0_OR_GREATER
-        [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
-#endif
-#if NET5_0_OR_GREATER
         [UnconditionalSuppressMessage("ReflectionAnalysis", "IL2068", Justification = "Nested interfaces are already preserved.")]
 #endif
         public static TypeInfo GetTypeInfoWithNestedPreservedInterfaces(this Type type)
@@ -30,10 +26,6 @@ namespace SharpGen.Runtime.TrimmingWrappers
 
 #if NET6_0_OR_GREATER
         [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.Interfaces)]
-#elif NET5_0_OR_GREATER
-        [return: DynamicallyAccessedMembers(DynamicallyAccessedMemberTypes.All)]
-#endif
-#if NET5_0_OR_GREATER
         [UnconditionalSuppressMessage("ReflectionAnalysis", "IL2073", Justification = "Nested interfaces are already preserved.")]
 #endif
         public static Type GetTypeWithNestedPreservedInterfaces(this object obj)

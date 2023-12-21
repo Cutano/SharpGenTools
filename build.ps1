@@ -13,7 +13,7 @@ if ($LastExitCode -ne 0) {
 }
 
 Write-Debug "Deploying built packages for COM Runtime build"
-if (!(./build/deploy-test-packages -PackedConfiguration $Configuration -Project "SharpGen.Runtime.COM")) {
+if (!(./build/deploy-test-packages -PackedConfiguration $Configuration -Project "SharpGen.Runtime.COM/SharpGen.Runtime.COM")) {
     Write-Error "Failed to deploy packages"
     exit 1
 }
@@ -99,7 +99,7 @@ if (!$SkipOuterloopTests -and !($env:ReleaseTag -and ($Configuration -eq "Releas
 
     $managedTests = "Interface", "Struct", "Functions"
 
-    $tfms = "net472", "netcoreapp2.1", "net5.0"
+    $tfms = "net472", "netcoreapp3.1", "net6.0"
     $platforms = "x86", "x64"
 
     $matrix = CartesianProduct-Lists @($tfms, $platforms)
